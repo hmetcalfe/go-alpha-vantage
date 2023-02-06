@@ -11,7 +11,7 @@ func DecodeAPIKey(key string) (string, error) {
 	logger := log.WithField("function", "utils.DecodeAPIKey()")
 	var retKey string
 
-	if len(key) <= 1 {
+	if len(key) < 1 {
 		logText := fmt.Sprintf("key size is not large enough %s", key)
 		logger.Error(logText)
 
