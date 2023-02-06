@@ -20,5 +20,5 @@ func GetStockInfo(symbol, apikey string) (data.Stock, error) {
 		return data.Stock{}, fmt.Errorf("%s: %w", logText, err)
 	}
 
-	return data.Stock{}, nil
+	return stock, nil
 }

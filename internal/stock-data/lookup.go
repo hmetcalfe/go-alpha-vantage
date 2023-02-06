@@ -2,6 +2,7 @@ package stocks
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -20,6 +21,7 @@ func LookupStockInfo(symbol, apikey string, stock *Stock) error {
 		return fmt.Errorf("%s: %w", logText, err)
 	}
 
+	// Perform the HTTP Get
 	resp, err := http.Get(url)
 	if err != nil {
 		logText := "failed to get information from the provided url"
@@ -28,7 +30,26 @@ func LookupStockInfo(symbol, apikey string, stock *Stock) error {
 		return fmt.Errorf("%s: %w", logText, err)
 	}
 
+	// Defer the response body close until function completion
 	defer resp.Body.Close()
+
+	// Read in the response data
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		logText := "failed to read in the response body"
+		logger.WithError(err).Error(logText)
+
+		return fmt.Errorf("%s: %w", logText, err)
+	}
+
+	// Parse the json into the Stock structure
+	*stock, err = ParseStockOverview(body)
+	if err != nil {
+		logText := "failed to parse the stock json"
+		logger.WithError(err).Error(logText)
+
+		return fmt.Errorf("%s: %w", logText, err)
+	}
 
 	return nil
 }
