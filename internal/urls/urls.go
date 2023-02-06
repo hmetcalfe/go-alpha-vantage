@@ -9,15 +9,19 @@ import (
 )
 
 const (
-	ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query?"
+	alpha_vantage_url = "https://www.alphavantage.co/query?"
 )
 
 const (
-	OVERVIEW_FUNCTION = "OVERVIEW"
+	overview_function = "OVERVIEW"
 )
 
 func APIUrl() string {
-	return ALPHA_VANTAGE_URL
+	return alpha_vantage_url
+}
+
+func OverviewFunction() string {
+	return overview_function
 }
 
 func CompanyOverviewUrl(symbol, apikey string) (string, error) {
@@ -33,5 +37,5 @@ func CompanyOverviewUrl(symbol, apikey string) (string, error) {
 	}
 
 	// Format the API URL https://www.alphavantage.co/query?function=FUNCTION&symbol=SYMBOL&apikey=apikey
-	return fmt.Sprintf("%sfunction=%s&symbol=%s&apikey=%s", ALPHA_VANTAGE_URL, OVERVIEW_FUNCTION, symbol, key), nil
+	return fmt.Sprintf("%sfunction=%s&symbol=%s&apikey=%s", APIUrl(), OverviewFunction(), symbol, key), nil
 }
